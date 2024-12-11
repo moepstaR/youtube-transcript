@@ -5,6 +5,11 @@ const USER_AGENT =
 const RE_XML_TRANSCRIPT =
   /<text start="([^"]*)" dur="([^"]*)">([^<]*)<\/text>/g;
 
+import fetch from 'node-fetch';
+import HttpsProxyAgent from 'https-proxy-agent';
+
+const client = new HttpsProxyAgent.HttpsProxyAgent(process.env.HTTP_PROXY);
+
 export class YoutubeTranscriptError extends Error {
   constructor(message) {
     super(`[YoutubeTranscript] 🚨 ${message}`);
@@ -78,6 +83,7 @@ export class YoutubeTranscript {
           ...(config?.lang && { 'Accept-Language': config.lang }),
           'User-Agent': USER_AGENT,
         },
+        agent: client,
       }
     );
     const videoPageBody = await videoPageResponse.text();
@@ -138,6 +144,7 @@ export class YoutubeTranscript {
         ...(config?.lang && { 'Accept-Language': config.lang }),
         'User-Agent': USER_AGENT,
       },
+      agent: client,
     });
     if (!transcriptResponse.ok) {
       throw new YoutubeTranscriptNotAvailableError(videoId);
