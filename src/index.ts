@@ -8,7 +8,7 @@ const RE_XML_TRANSCRIPT =
 import fetch from 'node-fetch';
 import HttpsProxyAgent from 'https-proxy-agent';
 
-const client = new HttpsProxyAgent.HttpsProxyAgent(process.env.HTTP_PROXY);
+const client = new HttpsProxyAgent.HttpsProxyAgent(process.env.YOUTUBE_HTTP_PROXY);
 
 export class YoutubeTranscriptError extends Error {
   constructor(message) {
